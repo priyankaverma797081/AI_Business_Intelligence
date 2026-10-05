@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Business Intelligence Dashboard</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}" defer></script>
+</head>
+
+<body>
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+            <h2>AI Business</h2>
+            <p>Intelligence</p>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="#" class="nav-item active">
+                📊 Dashboard
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+
+        <header class="dashboard-header">
+
+            <div>
+                <h1>Business Intelligence Dashboard</h1>
+
+                <p>
+                    AI-powered sales analytics & forecasting
+                </p>
+            </div>
+
+            <div class="header-actions">
+
+                <button id="exportCsvButton" class="export-btn" type="button">
+                    📥 Export CSV
+                </button>
+
+                <button id="exportExcelButton" class="export-btn" type="button">
+                    📊 Export Excel
+                </button>
+
+                <button id="exportPdfButton" class="export-btn" type="button">
+                    📄 Export PDF
+                </button>
+
+                <button id="refreshButton" class="refresh-btn" type="button">
+                    🔄 Refresh Data
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             FILTERS
+        ================================================== -->
+
+        <section class="filters-section">
+
+            <div class="filter-group">
+
+                <label for="categoryFilter">
+                    Category
+                </label>
+
+                <select id="categoryFilter">
+                    <option value="All">
+                        All Categories
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label for="regionFilter">
+                    Region
+                </label>
+
+                <select id="regionFilter">
+                    <option value="All">
+                        All Regions
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label for="monthFilter">
+                    Month
+                </label>
+
+                <select id="monthFilter">
+                    <option value="All">
+                        All Months
+                    </option>
+                </select>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             KPI CARDS
+        ================================================== -->
+
+        <section class="kpi-grid">
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon">
+                    💰
+                </div>
+
+                <div class="kpi-content">
+
+                    <h3>Total Sales</h3>
+
+                    <p id="totalSales">
+                        ₹0
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon">
+                    🛒
+                </div>
+
+                <div class="kpi-content">
+
+                    <h3>Total Orders</h3>
+
+                    <p id="totalOrders">
+                        0
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon">
+                    👥
+                </div>
+
+                <div class="kpi-content">
+
+                    <h3>Customers</h3>
+
+                    <p id="totalCustomers">
+                        0
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="kpi-card">
+
+                <div class="kpi-icon">
+                    📈
+                </div>
+
+                <div class="kpi-content">
+
+                    <h3>Average Order Value</h3>
+
+                    <p id="averageOrderValue">
+                        ₹0
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHARTS
+        ================================================== -->
+
+        <section class="charts-grid">
+
+            <!-- MONTHLY SALES -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <h2>
+                        Monthly Sales
+                    </h2>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas id="monthlySalesChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY SALES -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <h2>
+                        Sales by Category
+                    </h2>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas id="categorySalesChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- REGION SALES -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <h2>
+                        Sales by Region
+                    </h2>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas id="regionSalesChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FORECAST SECTION
+        ================================================== -->
+
+        <section class="forecast-section">
+
+            <div class="section-header">
+
+                <h2>
+                    🤖 AI Sales Forecast
+                </h2>
+
+                <p>
+                    Machine learning based future sales prediction
+                </p>
+
+            </div>
+
+
+            <div class="forecast-kpi-grid">
+
+                <div class="forecast-card">
+
+                    <h3>
+                        Next Month Forecast
+                    </h3>
+
+                    <p id="nextMonthForecast">
+                        ₹0
+                    </p>
+
+                    <span id="nextMonthForecastMonth">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="forecast-card">
+
+                    <h3>
+                        Average Forecast
+                    </h3>
+
+                    <p id="averageForecast">
+                        ₹0
+                    </p>
+
+                </div>
+
+
+                <div class="forecast-card">
+
+                    <h3>
+                        Highest Forecast
+                    </h3>
+
+                    <p id="highestForecast">
+                        ₹0
+                    </p>
+
+                    <span id="highestForecastMonth">
+                        -
+                    </span>
+
+                </div>
+
+
+                <div class="forecast-card">
+
+                    <h3>
+                        Overall Trend
+                    </h3>
+
+                    <p id="overallTrend">
+                        0%
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORECAST CHART -->
+
+            <div class="chart-card forecast-chart-card">
+
+                <div class="chart-header">
+
+                    <h2>
+                        Historical vs Forecast Sales
+                    </h2>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas id="forecastChart"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUSINESS INSIGHT -->
+
+            <div class="business-insight">
+
+                <h3>
+                    💡 Business Insight
+                </h3>
+
+                <p id="businessInsight">
+                    Loading business insight...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RECENT SALES
+        ================================================== -->
+
+        <section class="table-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Recent Transactions
+                    </h2>
+
+                    <p>
+                        Latest sales transactions based on
+                        selected filters
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Order ID
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Customer
+                            </th>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Region
+                            </th>
+
+                            <th>
+                                Quantity
+                            </th>
+
+                            <th>
+                                Total Sales
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="salesTableBody">
+
+                        <tr>
+
+                            <td colspan="8">
+                                Loading...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="dashboard-footer">
+
+            <p>
+                AI-Powered Business Intelligence & Sales
+                Forecasting System
+            </p>
+
+            <p>
+                Built with Python • Flask • MySQL • Machine Learning
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <!-- =====================================================
+         EXPORT BUTTON SCRIPT
+    ====================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                function buildExportUrl(endpoint) {
+
+                    const category =
+                        document.getElementById(
+                            "categoryFilter"
+                        )?.value || "All";
+
+                    const region =
+                        document.getElementById(
+                            "regionFilter"
+                        )?.value || "All";
+
+                    const month =
+                        document.getElementById(
+                            "monthFilter"
+                        )?.value || "All";
+
+                    const params =
+                        new URLSearchParams();
+
+                    if (
+                        category &&
+                        category !== "All"
+                    ) {
+
+                        params.set(
+                            "category",
+                            category
+                        );
+
+                    }
+
+                    if (
+                        region &&
+                        region !== "All"
+                    ) {
+
+                        params.set(
+                            "region",
+                            region
+                        );
+
+                    }
+
+                    if (
+                        month &&
+                        month !== "All"
+                    ) {
+
+                        params.set(
+                            "month",
+                            month
+                        );
+
+                    }
+
+                    const queryString =
+                        params.toString();
+
+                    return queryString
+                        ? `${endpoint}?${queryString}`
+                        : endpoint;
+                }
+
+
+                // CSV EXPORT
+
+                const csvButton =
+                    document.getElementById(
+                        "exportCsvButton"
+                    );
+
+                if (csvButton) {
+
+                    csvButton.addEventListener(
+                        "click",
+                        function () {
+
+                            const url =
+                                buildExportUrl(
+                                    "/export/csv"
+                                );
+
+                            window.location.href =
+                                url;
+                        }
+                    );
+
+                }
+
+
+                // EXCEL EXPORT
+
+                const excelButton =
+                    document.getElementById(
+                        "exportExcelButton"
+                    );
+
+                if (excelButton) {
+
+                    excelButton.addEventListener(
+                        "click",
+                        function () {
+
+                            const url =
+                                buildExportUrl(
+                                    "/export/excel"
+                                );
+
+                            window.location.href =
+                                url;
+                        }
+                    );
+
+                }
+
+
+                // PDF EXPORT
+
+                const pdfButton =
+                    document.getElementById(
+                        "exportPdfButton"
+                    );
+
+                if (pdfButton) {
+
+                    pdfButton.addEventListener(
+                        "click",
+                        function () {
+
+                            const url =
+                                buildExportUrl(
+                                    "/export/pdf"
+                                );
+
+                            window.location.href =
+                                url;
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
